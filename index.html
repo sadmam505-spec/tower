@@ -428,14 +428,13 @@
 							6. CONTROL CONTROLLER CORE & LIFE MATRIX Display
 							========================================================================== */
 							.control-core-wrapper {
-							/* [FIXED] নিচের margin-top প্রোপার্টি দিয়ে আপনি এখন পিরামিড থেকে বাটনের দূরত্ব কন্ট্রোল করতে পারবেন */
 							margin-top: 24px;
 							display: flex;
 							flex-direction: column;
 							align-items: center;
-							gap: 10px;
+							gap: 12px;
 							width: 100%;
-							padding-bottom: 10px; /* সেফটি প্যাডিং যেন একদম স্ক্রিন টাচ না করে */
+							padding-bottom: 10px;
 							}
 
 							.lives-heart-counter {
@@ -488,6 +487,38 @@
 
 							.engine-action-trigger:disabled {
 							opacity: 0.3;
+							pointer-events: none;
+							}
+
+							/* [OPTIMIZED] WATCH REWARDED AD PREMIUM BUTTON STYLE */
+							.ad-reward-trigger-btn {
+							/* [FIXED] উইডথ ৭৫% করে সাইজ ছোট ও সাবটেল করা হয়েছে */
+							width: 75%;
+							padding: 10px 14px;
+							background: linear-gradient(135deg, #ff9f43 0%, #ff6b6b 100%);
+							color: #ffffff;
+							border: none;
+							border-radius: 12px;
+							font-size: 11px;
+							font-weight: 700;
+							text-transform: uppercase;
+							letter-spacing: 0.5px;
+							cursor: pointer;
+							display: flex;
+							align-items: center;
+							justify-content: center;
+							gap: 6px;
+							box-shadow: 0 4px 12px rgba(255, 107, 107, 0.15);
+							transition: all 0.25s ease;
+							}
+
+							/* ডিফল্ট লকড/ডিসাবলড স্টেট স্টাইলিং */
+							.ad-reward-trigger-btn:disabled {
+							opacity: 0.35;
+							background: linear-gradient(135deg, #57606f 0%, #2f3542 100%);
+							color: rgba(255, 255, 255, 0.4);
+							box-shadow: none;
+							cursor: not-allowed;
 							pointer-events: none;
 							}
 						</style>
@@ -599,8 +630,13 @@
 					<div class="lives-heart-counter">
 						<i class="fa-solid fa-heart"></i> Lives: <span id="lives-running-count">10</span>
 					</div>
+
 					<button class="engine-action-trigger state-start" id="master-action-btn" onclick="handleMasterActionClick()">
 						Start Game
+					</button>
+
+					<button class="ad-reward-trigger-btn" id="watch-rewarded-ad-btn" onclick="watchRewardedAdSequence()" disabled="">
+						<i class="fa-solid fa-clapperboard"></i> Watch Ad for Free 10 Lives
 					</button>
 				</div>
 
