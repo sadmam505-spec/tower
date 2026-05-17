@@ -63,19 +63,6 @@
 							width: 0px;
 							}
 
-							.banner-ad-box {
-							width: 100%;
-							height: 55px;
-							background: rgba(255, 255, 255, 0.02);
-							border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-							display: flex;
-							justify-content: center;
-							align-items: center;
-							color: rgba(255, 255, 255, 0.3);
-							font-size: 11px;
-							letter-spacing: 2px;
-							}
-
 							/* ==========================================================================
 							2. HEADER SECTION (Nav Bar)
 							========================================================================== */
@@ -250,14 +237,12 @@
 							transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.15);
 							}
 
-							/* Premium Red/Black Styled Warning Popup Layout */
 							.rules-card.danger-variant {
 							background: #160f12;
 							border: 1px solid rgba(255, 76, 76, 0.3);
 							box-shadow: 0 20px 50px rgba(255, 76, 76, 0.15);
 							}
 
-							/* Premium Gold/Green Styled Success Popup Layout */
 							.rules-card.bonus-variant {
 							background: #0d1a14;
 							border: 1px solid rgba(0, 255, 135, 0.3);
@@ -366,7 +351,7 @@
 							========================================================================== */
 							.game-tower-pyramid {
 							display: flex;
-							flex-direction: column-reverse; /* Force level 1 at bottom, level 8 at top */
+							flex-direction: column-reverse;
 							align-items: center;
 							gap: 6px;
 							width: 100%;
@@ -384,16 +369,15 @@
 							display: flex;
 							justify-content: center;
 							align-items: center;
-							color: rgba(255, 255, 255, 0.15); /* Faint text locked state default */
+							color: rgba(255, 255, 255, 0.15);
 							font-size: 12px;
 							font-weight: 600;
 							letter-spacing: 0.5px;
-							pointer-events: none; /* Disabled by default on page load */
+							pointer-events: none;
 							transition: all 0.25s ease;
 							text-transform: uppercase;
 							}
 
-							/* Dynamic Width Progression Formulas (Pyramid Shapes) */
 							#floor-lv1 { width: 50%; }
 							#floor-lv2 { width: 57%; }
 							#floor-lv3 { width: 64%; }
@@ -403,7 +387,6 @@
 							#floor-lv7 { width: 92%; }
 							#floor-lv8 { width: 100%; }
 
-							/* Dynamic Engine States */
 							.tower-floor-btn.ready-state {
 							pointer-events: auto;
 							background: rgba(96, 239, 255, 0.08);
@@ -572,10 +555,6 @@
 				</div>
 			</div>
 
-			<div class="banner-ad-box">
-				[ Banner Advertisement Placeholder ]
-			</div>
-
 			<div class="scrollable-body">
 
 				<div class="top-nav-bar">
@@ -629,41 +608,30 @@
 		<script>
 			/* ==========================================================================
 			[⚓ FIREBASE DATA RECEPTION ANCHOR MARKER]
-			==========================================================================
-			The baseline operational states declared here are loaded cleanly on application
-			initiation. During deployment, link this structural segment directly to pull
-			historical account balance records and dynamic states from Firebase real-time nodes.
 			========================================================================== */
 
-			// Game Mechanics Probability Calibration Profile Matrix
 			const floorConfigurationMatrix = {
-			1: { points: 2,   minRoll: 1,  maxRoll: 90 },  // 90% Win Chance
-			2: { points: 5,   minRoll: 1,  maxRoll: 80 },  // 80% Win Chance
-			3: { points: 10,  minRoll: 1,  maxRoll: 70 },  // 70% Win Chance
-			4: { points: 15,  minRoll: 1,  maxRoll: 55 },  // 55% Win Chance
-			5: { points: 40,  minRoll: 1,  maxRoll: 40 },  // 40% Win Chance
-			6: { points: 30,  minRoll: 21, maxRoll: 40 },  // 20% Win Chance
-			7: { points: 50,  minRoll: 61, maxRoll: 70 },  // 10% Win Chance
-			8: { points: 100, minRoll: 16, maxRoll: 20 }   // 5% Win Chance
+			1: { points: 2,   minRoll: 1,  maxRoll: 90 },
+			2: { points: 5,   minRoll: 1,  maxRoll: 80 },
+			3: { points: 10,  minRoll: 1,  maxRoll: 70 },
+			4: { points: 15,  minRoll: 1,  maxRoll: 55 },
+			5: { points: 40,  minRoll: 1,  maxRoll: 40 },
+			6: { points: 30,  minRoll: 21, maxRoll: 40 },
+			7: { points: 50,  minRoll: 61, maxRoll: 70 },
+			8: { points: 100, minRoll: 16, maxRoll: 20 }
 			};
 
-			// Core Runtime Memory Parameter Allocations (Starts at Balance: 0, Lives: 10)
 			let globalPointsBalance = 0;
 			let runningLivesCount = 10;
 			let activeCurrentFloorLevel = 0;
 			let pendingClaimablePoints = 0;
 			let isGameSessionRunning = false;
 
-			// Recent Logging Structural Pipeline Array Tracking
 			let historicalReportsBuffer = ["-", "-", "-"];
 
-			/**
-			* Controls global overlay visibility matrix toggles
-			*/
 			function togglePopupModal(shouldShow, targetContentId = '') {
 			const overlay = document.getElementById('rules-popup-layer');
 
-			// Blanket hide all content panes safely first
 			document.getElementById('modal-rules-content').style.display = 'none';
 			document.getElementById('modal-nolives-content').style.display = 'none';
 			document.getElementById('modal-danger-content').style.display = 'none';
@@ -677,37 +645,26 @@
 			}
 			}
 
-			/**
-			* Explicit Trigger Router Shortcuts for Modal Sub-variants
-			*/
 			function triggerRulesModalView() {
 			togglePopupModal(true, 'modal-rules-content');
 			}
 
 			function watchRewardedAdSequence() {
 			togglePopupModal(false);
-
-			// Mock Injection Code Segment (To be swapped with Adsgram SDK later)
 			alert("Launching Adsgram/Monetag API Video Integration Stream...");
 			runningLivesCount = 10;
 			document.getElementById('lives-running-count').innerText = runningLivesCount;
 			}
 
-			/**
-			* Core Controller Button Router (Start vs Claim Actions Manager Engine)
-			*/
 			function handleMasterActionClick() {
-			// Safety Check validation matrix gatekeeper
 			if (runningLivesCount <= 0) {
 			togglePopupModal(true, 'modal-nolives-content');
 			return;
 			}
 
 			if (!isGameSessionRunning) {
-			// ENGINE REVOLUTION TRIGGER START UP ROUTINE
 			isGameSessionRunning = true;
 
-			// Immediate Life Token Deduction on Session Execution Entry
 			runningLivesCount--;
 			document.getElementById('lives-running-count').innerText = runningLivesCount;
 
@@ -719,32 +676,22 @@
 
 			updateMasterButtonUI('active_game');
 			} else {
-			// SECURE WIN CLAIM ROUTINE LAUNCHPAD ACTIONS
 			globalPointsBalance += pendingClaimablePoints;
 			document.getElementById('global-user-balance').innerText = globalPointsBalance.toLocaleString();
 
-			// Finalize trace mapping status values safely
 			pushNewReportLog(`lv${activeCurrentFloorLevel}`, 'success');
 			exitGameSessionEngine();
 			}
 			}
 
-			/**
-			* Dynamically arms a specific pyramid row configuration floor layer
-			*/
 			function armFloorLevelState(floorId) {
-			// Disarm all floors safely first
 			for (let i = 1; i <= 8; i++) {
 			document.getElementById(`floor-lv${i}`).classList.remove('ready-state');
 			}
-			// Arm targeted active row block
 			const floorElement = document.getElementById(`floor-lv${floorId}`);
 			floorElement.classList.add('ready-state');
 			}
 
-			/**
-			* Core Probability Processor System Logic (Random 1-100 Evaluator Matrix)
-			*/
 			function evaluateFloorAttempt(floorId) {
 			if (!isGameSessionRunning || floorId !== activeCurrentFloorLevel) return;
 
@@ -755,7 +702,6 @@
 			floorElement.classList.remove('ready-state');
 
 			if (enginePickedRandomNumber >= floorRules.minRoll && enginePickedRandomNumber <= floorRules.maxRoll) {
-			// SUCCESS SUB-ROUTINE EVALUATION MATCH
 			floorElement.className = "tower-floor-btn success-state";
 			floorElement.innerText = "SUCCESS";
 
@@ -766,7 +712,6 @@
 						activeCurrentFloorLevel = floorId + 1;
 						armFloorLevelState(activeCurrentFloorLevel);
 					} else {
-						// Automatic Terminal Floor Clear Routine Actions Trigger
 						alert("Ultimate Conquered! Floor Level 8 Cleared cleanly.");
 						globalPointsBalance += pendingClaimablePoints;
 						document.getElementById('global-user-balance').innerText = globalPointsBalance.toLocaleString();
@@ -774,7 +719,10 @@
 						exitGameSessionEngine();
 					}
 				} else {
-					// FAILURE SUB-ROUTINE EVALUATION MATCH (No life deduction here anymore)
+					isGameSessionRunning = false; 
+					updateMasterButtonUI('start_state');
+					document.getElementById('master-action-btn').disabled = true;
+
 					floorElement.className = "tower-floor-btn failed-state";
 					floorElement.innerText = "FAILED";
 
@@ -786,9 +734,6 @@
 				}
 			}
 
-			/**
-			 * Exit and Flash Memory parameters down clean back to baseline states
-			 */
 			function exitGameSessionEngine() {
 				isGameSessionRunning = false;
 				activeCurrentFloorLevel = 0;
@@ -798,22 +743,16 @@
 				updateMasterButtonUI('start_state');
 			}
 
-			/**
-			 * Restores clean layout defaults across the entire locked pyramid block tower
-			 */
 			function resetPyramidTowerVisuals() {
 				for (let i = 1; i <= 8; i++) {
 			const floor = document.getElementById(`floor-lv${i}`);
-			floor.className = "tower-floor-btn"; // Strips armed states out cleanly
+			floor.className = "tower-floor-btn";
 
 			const configurationPointsValue = floorConfigurationMatrix[i].points;
 			floor.innerText = `lv${i} ${configurationPointsValue}pts`;
 			}
 			}
 
-			/**
-			* UI Control State Manager Modifiers
-			*/
 			function updateMasterButtonUI(stateMode, rewardValue = 0) {
 			const masterBtn = document.getElementById('master-action-btn');
 
@@ -832,14 +771,10 @@
 			}
 			}
 
-			/**
-			* Recent Log Buffer Engine & Complex Analytics Evaluation Engine for Streaks
-			*/
 			function pushNewReportLog(levelLabel, outcomeStatus) {
 			historicalReportsBuffer.shift();
 			historicalReportsBuffer.push({ label: levelLabel, status: outcomeStatus });
 
-			// Redraw logging panel nodes inside layout engine
 			for (let i = 0; i < 3; i++) {
 					const targetSlot = document.getElementById(`report-slot-${i}`);
 					const dataProfile = historicalReportsBuffer[i];
@@ -857,15 +792,10 @@
 					}
 				}
 
-				// Execute validation engine check parameters against buffered elements for streaks
 				evaluateStreakRulesConsequences();
 			}
 
-			/**
-			 * Evaluates consecutive win streaks or lose sequences inside active trace arrays
-			 */
 			function evaluateStreakRulesConsequences() {
-				// Ensure buffer tracking data arrays are completely populated
 				if (historicalReportsBuffer[0] === "-" || historicalReportsBuffer[1] === "-" || historicalReportsBuffer[2] === "-") {
 					return;
 				}
@@ -874,7 +804,6 @@
 				const slot1 = historicalReportsBuffer[1];
 				const slot2 = historicalReportsBuffer[2];
 
-				// CONDITION 1: Check for 3 Consecutive Failed Sequences
 				if (slot0.status === 'failed' && slot1.status === 'failed' && slot2.status === 'failed') {
 			if (runningLivesCount >= 3) {
 			runningLivesCount -= 3;
@@ -886,12 +815,10 @@
 			document.getElementById('danger-popup-text').innerText = "You have suffered a continuous loss streak of 3 consecutive sessions! As a safeguard enforcement penalty, 3 lives have been deducted from your balance tracker.";
 			togglePopupModal(true, 'modal-danger-content');
 
-			// Reset buffer memory parameters to neutral state to prevent infinite recursion loop triggers
 			historicalReportsBuffer = ["-", "-", "-"];
 			return;
 			}
 
-			// CONDITION 2: Check for 3 Consecutive Successful Level 6 Completions
 			if (slot0.label === 'lv6' && slot1.label === 'lv6' && slot2.label === 'lv6' &&
 			slot0.status === 'success' && slot1.status === 'success' && slot2.status === 'success') {
 
@@ -905,7 +832,6 @@
 			return;
 			}
 
-			// CONDITION 3: Check for 3 Consecutive Successful Level 7 Completions
 			if (slot0.label === 'lv7' && slot1.label === 'lv7' && slot2.label === 'lv7' &&
 			slot0.status === 'success' && slot1.status === 'success' && slot2.status === 'success') {
 
@@ -919,7 +845,6 @@
 			return;
 			}
 
-			// CONDITION 4: Check for 3 Consecutive Successful Level 8 Completions
 			if (slot0.label === 'lv8' && slot1.label === 'lv8' && slot2.label === 'lv8' &&
 			slot0.status === 'success' && slot1.status === 'success' && slot2.status === 'success') {
 
