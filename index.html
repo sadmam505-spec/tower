@@ -428,12 +428,14 @@
 							6. CONTROL CONTROLLER CORE & LIFE MATRIX Display
 							========================================================================== */
 							.control-core-wrapper {
-							margin-top: auto;
+							/* [FIXED] নিচের margin-top প্রোপার্টি দিয়ে আপনি এখন পিরামিড থেকে বাটনের দূরত্ব কন্ট্রোল করতে পারবেন */
+							margin-top: 24px;
 							display: flex;
 							flex-direction: column;
 							align-items: center;
 							gap: 10px;
 							width: 100%;
+							padding-bottom: 10px; /* সেফটি প্যাডিং যেন একদম স্ক্রিন টাচ না করে */
 							}
 
 							.lives-heart-counter {
