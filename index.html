@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+				<title>Tower of Fortune - Level Up Game</title>
+
+				<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+					<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+						<style>
+							/* ==========================================================================
+							1. CORE & CONTAINER CONFIGURATIONS
+							========================================================================== */
+							* {
+							margin: 0;
+							padding: 0;
+							box-sizing: border-box;
+							font-family: 'Inter', sans-serif;
+							-webkit-tap-highlight-color: transparent;
+							}
+
+							body {
+							background-color: #0c0f14;
+							color: #ffffff;
+							display: flex;
+							justify-content: center;
+							align-items: center;
+							min-height: 100vh;
+							}
+
+							.app-container {
+							width: 100%;
+							max-width: 420px;
+							height: 100vh;
+							max-height: 850px;
+							background: linear-gradient(180deg, #131722 0%, #0c0f14 100%);
+							border: 1px solid rgba(255, 255, 255, 0.05);
+							box-shadow: 0 24px 75px rgba(0, 0, 0, 0.6);
+							display: flex;
+							flex-direction: column;
+							overflow: hidden;
+							position: relative;
+							}
+
+							@media (min-width: 425px) {
+							.app-container {
+							border-radius: 32px;
+							height: 92vh;
+							}
+							}
+
+							.scrollable-body {
+							flex: 1;
+							overflow-y: auto;
+							padding: 16px;
+							display: flex;
+							flex-direction: column;
+							gap: 16px;
+							}
+
+							.scrollable-body::-webkit-scrollbar {
+							width: 0px;
+							}
+
+							.banner-ad-box {
+							width: 100%;
+							height: 55px;
+							background: rgba(255, 255, 255, 0.02);
+							border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+							display: flex;
+							justify-content: center;
+							align-items: center;
+							color: rgba(255, 255, 255, 0.3);
+							font-size: 11px;
+							letter-spacing: 2px;
+							}
+
+							/* ==========================================================================
+							2. HEADER HEADER SECTION (Nav Bar)
+							========================================================================== */
+							.top-nav-bar {
+							background: rgba(255, 255, 255, 0.03);
+							border: 1px solid rgba(255, 255, 255, 0.08);
+							border-radius: 16px;
+							padding: 10px 14px;
+							display: flex;
+							justify-content: space-between;
+							align-items: center;
+							}
+
+							.home-icon-btn {
+							color: rgba(255, 255, 255, 0.6);
+							font-size: 16px;
+							cursor: pointer;
+							width: 34px;
+							height: 34px;
+							display: flex;
+							align-items: center;
+							justify-content: center;
+							border-radius: 50%;
+							background: rgba(255, 255, 255, 0.02);
+							}
+
+							.point-balance-display {
+							display: flex;
+							flex-direction: column;
+							align-items: center;
+							}
+
+							.point-balance-display span:first-child {
+							font-size: 9px;
+							color: rgba(255, 255, 255, 0.4);
+							text-transform: uppercase;
+							letter-spacing: 1px;
+							}
+
+							.point-balance-display span:last-child {
+							font-size: 16px;
+							font-weight: 700;
+							color: #f3ba2f;
+							}
+
+							.top-nav-claim-btn {
+							background: rgba(255, 255, 255, 0.05);
+							color: rgba(255, 255, 255, 0.4);
+							border: 1px solid rgba(255, 255, 255, 0.05);
+							padding: 6px 14px;
+							border-radius: 20px;
+							font-size: 11px;
+							font-weight: 600;
+							}
+
+							/* ==========================================================================
+							3. MIDDLE SECTION: LIVE REPORT BOARD & RULES BUTTON
+							========================================================================== */
+							.dashboard-row-wrapper {
+							display: flex;
+							justify-content: space-between;
+							align-items: center;
+							gap: 12px;
+							width: 100%;
+							}
+
+							.live-report-container {
+							flex: 1;
+							background: rgba(255, 255, 255, 0.02);
+							border: 1px solid rgba(255, 255, 255, 0.06);
+							border-radius: 16px;
+							padding: 10px 14px;
+							display: flex;
+							flex-direction: column;
+							gap: 8px;
+							}
+
+							.report-label {
+							font-size: 10px;
+							color: rgba(255, 255, 255, 0.4);
+							text-transform: uppercase;
+							letter-spacing: 0.5px;
+							}
+
+							.report-slots-row {
+							display: grid;
+							grid-template-columns: repeat(3, 1fr);
+							gap: 8px;
+							}
+
+							.report-box {
+							height: 28px;
+							background: rgba(255, 255, 255, 0.03);
+							border: 1px dashed rgba(255, 255, 255, 0.1);
+							border-radius: 8px;
+							display: flex;
+							justify-content: center;
+							align-items: center;
+							font-size: 10px;
+							font-weight: 700;
+							text-transform: uppercase;
+							color: rgba(255, 255, 255, 0.3);
+							transition: all 0.3s ease;
+							}
+
+							.report-box.status-success {
+							background: rgba(0, 255, 135, 0.15);
+							border: 1px solid #00ff87;
+							color: #00ff87;
+							}
+
+							.report-box.status-failed {
+							background: rgba(255, 76, 76, 0.15);
+							border: 1px solid #ff4c4c;
+							color: #ff4c4c;
+							}
+
+							.rules-trigger-btn {
+							background: rgba(96, 239, 255, 0.05);
+							border: 1px solid rgba(96, 239, 255, 0.2);
+							color: #60efff;
+							border-radius: 14px;
+							padding: 0 16px;
+							height: 58px;
+							font-size: 12px;
+							font-weight: 600;
+							cursor: pointer;
+							display: flex;
+							align-items: center;
+							gap: 6px;
+							transition: all 0.2s;
+							}
+
+							.rules-trigger-btn:hover {
+							background: rgba(96, 239, 255, 0.1);
+							}
+
+							/* ==========================================================================
+							4. PREMIUM DIALOG POPUP LAYER (Rules Engine)
+							========================================================================== */
+							.rules-popup-overlay {
+							position: absolute;
+							top: 0;
+							left: 0;
+							width: 100%;
+							height: 100%;
+							background: rgba(12, 15, 20, 0.9);
+							backdrop-filter: blur(8px);
+							display: flex;
+							justify-content: center;
+							align-items: center;
+							z-index: 2000;
+							opacity: 0;
+							pointer-events: none;
+							transition: opacity 0.3s ease;
+							}
+
+							.rules-popup-overlay.active {
+							opacity: 1;
+							pointer-events: auto;
+							}
+
+							.rules-card {
+							background: #171d29;
+							border: 1px solid rgba(96, 239, 255, 0.2);
+							box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+							border-radius: 24px;
+							width: 88%;
+							padding: 24px;
+							position: relative;
+							transform: scale(0.9);
+							transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.15);
+							}
+
+							.rules-popup-overlay.active .rules-card {
+							transform: scale(1);
+							}
+
+							.rules-close-icon {
+							position: absolute;
+							top: 18px;
+							right: 18px;
+							color: rgba(255, 255, 255, 0.4);
+							font-size: 18px;
+							cursor: pointer;
+							transition: color 0.2s;
+							}
+
+							.rules-close-icon:hover {
+							color: #ff4c4c;
+							}
+
+							.rules-card h3 {
+							font-size: 18px;
+							font-weight: 700;
+							color: #60efff;
+							margin-bottom: 16px;
+							display: flex;
+							align-items: center;
+							gap: 8px;
+							}
+
+							.rules-list-scroller {
+							max-height: 300px;
+							overflow-y: auto;
+							text-align: left;
+							display: flex;
+							flex-direction: column;
+							gap: 10px;
+							padding-right: 4px;
+							}
+
+							.rules-list-scroller::-webkit-scrollbar {
+							width: 3px;
+							}
+
+							.rules-list-scroller::-webkit-scrollbar-thumb {
+							background: rgba(255,255,255,0.1);
+							border-radius: 10px;
+							}
+
+							.rule-item {
+							font-size: 12px;
+							color: rgba(255, 255, 255, 0.7);
+							line-height: 1.5;
+							background: rgba(255,255,255,0.02);
+							padding: 10px 12px;
+							border-radius: 10px;
+							border-left: 3px solid #60efff;
+							}
+
+							/* ==========================================================================
+							5. GAME TOWER SECTION (Pyramid Configuration)
+							========================================================================== */
+							.game-tower-pyramid {
+							display: flex;
+							flex-direction: column-reverse; /* Force level 1 at bottom, level 8 at top */
+							align-items: center;
+							gap: 6px;
+							width: 100%;
+							background: rgba(255, 255, 255, 0.01);
+							padding: 12px;
+							border-radius: 20px;
+							border: 1px solid rgba(255, 255, 255, 0.03);
+							}
+
+							.tower-floor-btn {
+							height: 38px;
+							background: rgba(255, 255, 255, 0.03);
+							border: 1px solid rgba(255, 255, 255, 0.06);
+							border-radius: 10px;
+							display: flex;
+							justify-content: center;
+							align-items: center;
+							color: rgba(255, 255, 255, 0.25); /* Faint text standard */
+							font-size: 12px;
+							font-weight: 600;
+							letter-spacing: 0.5px;
+							pointer-events: none; /* Disabled by default */
+							transition: all 0.25s ease;
+							text-transform: uppercase;
+							}
+
+							/* Dynamic Width Progression Formulas (Pyramid Shapes) */
+							#floor-lv1 { width: 50%; }
+							#floor-lv2 { width: 57%; }
+							#floor-lv3 { width: 64%; }
+							#floor-lv4 { width: 71%; }
+							#floor-lv5 { width: 78%; }
+							#floor-lv6 { width: 85%; }
+							#floor-lv7 { width: 92%; }
+							#floor-lv8 { width: 100%; }
+
+							/* Dynamic Engine States */
+							.tower-floor-btn.ready-state {
+							pointer-events: auto;
+							background: rgba(96, 239, 255, 0.08);
+							border-color: #60efff;
+							color: #60efff;
+							cursor: pointer;
+							box-shadow: 0 0 15px rgba(96, 239, 255, 0.15);
+							animation: floorSignal 1.2s infinite alternate ease-in-out;
+							}
+
+							@keyframes floorSignal {
+							0% { transform: scale(1); opacity: 0.9; }
+							100% { transform: scale(1.02); opacity: 1; box-shadow: 0 0 20px rgba(96, 239, 255, 0.3); }
+							}
+
+							.tower-floor-btn.success-state {
+							background: #00ff87 !important;
+							border-color: #00ff87 !important;
+							color: #000000 !important;
+							font-weight: 700;
+							box-shadow: 0 0 15px rgba(0, 255, 135, 0.2);
+							}
+
+							.tower-floor-btn.failed-state {
+							background: #ff4c4c !important;
+							border-color: #ff4c4c !important;
+							color: #ffffff !important;
+							font-weight: 700;
+							animation: floorShake 0.25s ease;
+							}
+
+							@keyframes floorShake {
+							0%, 100% { transform: translateX(0); }
+							25% { transform: translateX(-4px); }
+							75% { transform: translateX(4px); }
+							}
+
+							/* ==========================================================================
+							6. CONTROL CONTROLLER CORE & LIFE MATRIX Display
+							========================================================================== */
+							.control-core-wrapper {
+							margin-top: auto;
+							display: flex;
+							flex-direction: column;
+							align-items: center;
+							gap: 10px;
+							width: 100%;
+							}
+
+							.lives-heart-counter {
+							display: flex;
+							align-items: center;
+							gap: 6px;
+							font-size: 13px;
+							font-weight: 600;
+							color: rgba(255, 255, 255, 0.7);
+							background: rgba(255, 255, 255, 0.03);
+							padding: 6px 14px;
+							border-radius: 20px;
+							border: 1px solid rgba(255, 255, 255, 0.05);
+							}
+
+							.lives-heart-counter i {
+							color: #ff4c4c;
+							animation: pulseHeart 1.5s infinite alternate;
+							}
+
+							@keyframes pulseHeart {
+							0% { transform: scale(1); }
+							100% { transform: scale(1.15); }
+							}
+
+							.engine-action-trigger {
+							width: 100%;
+							padding: 16px;
+							border-radius: 16px;
+							font-size: 15px;
+							font-weight: 700;
+							cursor: pointer;
+							text-transform: uppercase;
+							letter-spacing: 0.5px;
+							transition: all 0.25s ease;
+							border: none;
+							}
+
+							.engine-action-trigger.state-start {
+							background: linear-gradient(135deg, #60efff 0%, #0061ff 100%);
+							color: #ffffff;
+							box-shadow: 0 4px 20px rgba(96, 239, 255, 0.2);
+							}
+
+							.engine-action-trigger.state-claim {
+							background: linear-gradient(135deg, #00ff87 0%, #60efff 100%);
+							color: #000000;
+							box-shadow: 0 4px 25px rgba(0, 255, 135, 0.3);
+							}
+
+							.engine-action-trigger:disabled {
+							opacity: 0.3;
+							pointer-events: none;
+							}
+						</style>
+					</head>
+	<body>
+
+		<div class="app-container">
+
+			<div class="rules-popup-overlay" id="rules-popup-layer">
+				<div class="rules-card">
+					<div class="rules-close-icon" onclick="toggleRulesModal(false)">
+						<i class="fa-solid fa-xmark"></i>
+					</div>
+					<h3>
+						<i class="fa-solid fa-book-open"></i> Game Rules
+					</h3>
+					<div class="rules-list-scroller">
+						<div class="rule-item">1. পরপর ৩ বার যদি LV6 পর্যন্ত যেতে পারেন তাহলে ২টি Life বোনাস পাবেন।</div>
+						<div class="rule-item">2. পরপর ৩ বার যদি LV7 যেতে পারেন তাহলে ৫ Life বোনাস।</div>
+						<div class="rule-item">3. পরপর ৩বার LV8 গেলে ২০ Life বোনাস।</div>
+						<div class="rule-item">4. পরপর ৩ বার Failed হলে ৩টা Life মাইনাস হয়ে যাবে।</div>
+						<div class="rule-item">5. একটা Session কমপ্লিট হলে পরের Session শুরু হবে ২.৫ ঘন্টা পর।</div>
+						<div class="rule-item">6. এই ২.৫ আওয়ারকে স্কিপ করে ইনস্ট্যান্ট ১০ Life পেতে আপনি একটি ভিডিও দেখতে পারেন।</div>
+						<div class="rule-item">7. Life শেষ না হওয়া পর্যন্ত ভিডিও অ্যাভেইলেবল হবে না।</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="banner-ad-box">
+				[ Banner Advertisement Placeholder ]
+			</div>
+
+			<div class="scrollable-body">
+
+				<div class="top-nav-bar">
+					<div class="home-icon-btn">
+						<i class="fa-solid fa-house"></i>
+					</div>
+					<div class="point-balance-display">
+						<span>Balance</span>
+						<span id="global-user-balance">0</span>
+					</div>
+					<button class="top-nav-claim-btn">Claim</button>
+				</div>
+
+				<div class="dashboard-row-wrapper">
+					<div class="live-report-container">
+						<span class="report-label">Recent Reports</span>
+						<div class="report-slots-row">
+							<div class="report-box" id="report-slot-0">-</div>
+							<div class="report-box" id="report-slot-1">-</div>
+							<div class="report-box" id="report-slot-2">-</div>
+						</div>
+					</div>
+					<button class="rules-trigger-btn" onclick="toggleRulesModal(true)">
+						Rules <i class="fa-solid fa-circle-info"></i>
+					</button>
+				</div>
+
+				<div class="game-tower-pyramid">
+					<div class="tower-floor-btn" id="floor-lv1" onclick="evaluateFloorAttempt(1)">lv1 2pts</div>
+					<div class="tower-floor-btn" id="floor-lv2" onclick="evaluateFloorAttempt(2)">lv2 5pts</div>
+					<div class="tower-floor-btn" id="floor-lv3" onclick="evaluateFloorAttempt(3)">lv3 10pts</div>
+					<div class="tower-floor-btn" id="floor-lv4" onclick="evaluateFloorAttempt(4)">lv4 15pts</div>
+					<div class="tower-floor-btn" id="floor-lv5" onclick="evaluateFloorAttempt(5)">lv5 20pts</div>
+					<div class="tower-floor-btn" id="floor-lv6" onclick="evaluateFloorAttempt(6)">lv6 30 pts</div>
+					<div class="tower-floor-btn" id="floor-lv7" onclick="evaluateFloorAttempt(7)">lv7 50pts</div>
+					<div class="tower-floor-btn" id="floor-lv8" onclick="evaluateFloorAttempt(8)">lv8 100pts</div>
+				</div>
+
+				<div class="control-core-wrapper">
+					<div class="lives-heart-counter">
+						<i class="fa-solid fa-heart"></i> Lives: <span id="lives-running-count">10</span>
+					</div>
+					<button class="engine-action-trigger state-start" id="master-action-btn" onclick="handleMasterActionClick()">
+						Start Game
+					</button>
+				</div>
+
+			</div>
+		</div>
+
+		<script>
+			// Game Mechanics Structural Configuration Profile
+			const floorConfigurationMatrix = {
+			1: { points: 2,   minRoll: 1,  maxRoll: 90 },  // 90% Win Chance
+			2: { points: 5,   minRoll: 1,  maxRoll: 80 },  // 80% Win Chance
+			3: { points: 10,  minRoll: 1,  maxRoll: 70 },  // 70% Win Chance
+			4: { points: 15,  minRoll: 1,  maxRoll: 55 },  // 55% Win Chance
+			5: { points: 40,  minRoll: 1,  maxRoll: 40 },  // 40% Win Chance (Revised mapping logic range 1-40)
+			6: { points: 30,  minRoll: 21, maxRoll: 40 },  // 20% Win Chance (Strict range 21-40)
+			7: { points: 50,  minRoll: 61, maxRoll: 70 },  // 10% Win Chance (Strict range 61-70)
+			8: { points: 100, minRoll: 16, maxRoll: 20 }   // 5% Win Chance  (Strict range 16-20)
+			};
+
+			// Core Running Memory States
+			let globalPointsBalance = 0;
+			let runningLivesCount = 10;
+			let activeCurrentFloorLevel = 0;
+			let pendingClaimablePoints = 0;
+			let isGameSessionRunning = false;
+
+			// Report Rolling Buffer Memory array
+			let historicalReportsBuffer = ["-", "-", "-"];
+
+			/**
+			* Open/Close Premium HTML Dialog Layer
+			*/
+			function toggleRulesModal(shouldShow) {
+			const rulesPopup = document.getElementById('rules-popup-layer');
+			if (shouldShow) {
+			rulesPopup.classList.add('active');
+			} else {
+			rulesPopup.classList.remove('active');
+			}
+			}
+
+			/**
+			* Core Controller Button Router (Start vs Claim Actions Manager)
+			*/
+			function handleMasterActionClick() {
+			if (runningLivesCount <= 0) {
+			alert("No lives remaining! Please watch a video to replenish.");
+			return;
+			}
+
+			if (!isGameSessionRunning) {
+			// START ROUTINE ACTIONS
+			isGameSessionRunning = true;
+			activeCurrentFloorLevel = 1;
+			pendingClaimablePoints = 0;
+
+			resetPyramidTowerVisuals();
+			armFloorLevelState(1);
+
+			updateMasterButtonUI('active_game');
+			} else {
+			// SECURE WIN CLAIM ROUTINE ACTIONS
+			globalPointsBalance += pendingClaimablePoints;
+			document.getElementById('global-user-balance').innerText = globalPointsBalance.toLocaleString();
+
+			// Update Logger Frame with secured target status
+			pushNewReportLog(`lv${activeCurrentFloorLevel}`, 'success');
+
+			exitGameSessionEngine();
+			}
+			}
+
+			/**
+			* Dynamically arms a specific pyramid row configuration floor layer
+			*/
+			function armFloorLevelState(floorId) {
+			// Disarm all floors safely first
+			for (let i = 1; i <= 8; i++) {
+			document.getElementById(`floor-lv${i}`).classList.remove('ready-state');
+			}
+			// Arm targeted active row block
+			const floorElement = document.getElementById(`floor-lv${floorId}`);
+			floorElement.classList.add('ready-state');
+			}
+
+			/**
+			* Core Probability Processor System Logic (Random 1-100 Evaluator Matrix)
+			*/
+			function evaluateFloorAttempt(floorId) {
+			if (!isGameSessionRunning || floorId !== activeCurrentFloorLevel) return;
+
+			// Generate precise random integer bounded 1 to 100 inclusive
+			const enginePickedRandomNumber = Math.floor(Math.random() * 100) + 1;
+			const floorRules = floorConfigurationMatrix[floorId];
+
+			const floorElement = document.getElementById(`floor-lv${floorId}`);
+			floorElement.classList.remove('ready-state');
+
+			// Probability Match Check Execution Loop
+			if (enginePickedRandomNumber >= floorRules.minRoll && enginePickedRandomNumber <= floorRules.maxRoll) {
+			// SUCCESS SUB-ROUTINE HANDLER
+			floorElement.className = "tower-floor-btn success-state";
+			floorElement.innerText = "SUCCESS";
+
+			pendingClaimablePoints = floorRules.points; // Overwrite current tier payload safely
+			updateMasterButtonUI('claim_state', pendingClaimablePoints);
+
+			if (floorId < 8) {
+                    // Transition upwards to next armed row floor target safely
+                    activeCurrentFloorLevel = floorId + 1;
+                    armFloorLevelState(activeCurrentFloorLevel);
+                } else {
+                    // Maximum Floor Level 8 Conquered automatically trigger system claims
+                    alert("Ultimate Conquered! Floor Level 8 Cleared cleanly.");
+                    globalPointsBalance += pendingClaimablePoints;
+                    document.getElementById('global-user-balance').innerText = globalPointsBalance.toLocaleString();
+                    pushNewReportLog('lv8', 'success');
+                    exitGameSessionEngine();
+                }
+            } else {
+                // FAILURE / CRASH SUB-ROUTINE HANDLER
+                floorElement.className = "tower-floor-btn failed-state";
+                floorElement.innerText = "FAILED";
+
+                runningLivesCount--;
+                document.getElementById('lives-running-count').innerText = runningLivesCount;
+
+                // Push failed trace profile directly into report slot buffer
+                pushNewReportLog(`lv${floorId}`, 'failed');
+
+                // Freeze thread, perform rollback to absolute neutral cycle matrix configuration
+                setTimeout(() => {
+                    exitGameSessionEngine();
+                }, 1200);
+            }
+        }
+
+        /**
+         * Exit and Flash Memory parameters down clean back to baseline states
+         */
+        function exitGameSessionEngine() {
+            isGameSessionRunning = false;
+            activeCurrentFloorLevel = 0;
+            pendingClaimablePoints = 0;
+            
+            resetPyramidTowerVisuals();
+            updateMasterButtonUI('start_state');
+        }
+
+        /**
+         * Restores clean layout defaults across the entire pyramid block tower
+         */
+        function resetPyramidTowerVisuals() {
+            for (let i = 1; i <= 8; i++) {
+			const floor = document.getElementById(`floor-lv${i}`);
+			floor.className = "tower-floor-btn"; // Strip active state styles cleanly
+
+			// Restore default text structures smoothly
+			const configurationPointsValue = floorConfigurationMatrix[i].points;
+			floor.innerText = `lv${i} ${configurationPointsValue}pts`;
+			}
+			}
+
+			/**
+			* UI Controller Label Modifier Engine
+			*/
+			function updateMasterButtonUI(stateMode, rewardValue = 0) {
+			const masterBtn = document.getElementById('master-action-btn');
+
+			if (stateMode === 'start_state') {
+			masterBtn.className = "engine-action-trigger state-start";
+			masterBtn.innerText = "Start Game";
+			masterBtn.disabled = false;
+			} else if (stateMode === 'active_game') {
+			masterBtn.className = "engine-action-trigger state-start";
+			masterBtn.innerText = "Playing...";
+			masterBtn.disabled = true; // Lock down click till a level is conqurered
+			} else if (stateMode === 'claim_state') {
+			masterBtn.className = "engine-action-trigger state-claim";
+			masterBtn.innerText = `Claim ${rewardValue} pts`;
+			masterBtn.disabled = false;
+			}
+			}
+
+			/**
+			* Pushes fresh game logs into the Top Buffer Shelf Layout View dynamically
+			*/
+			function pushNewReportLog(levelLabel, outcomeStatus) {
+			// Drop oldest index shift arrays upwards seamlessly
+			historicalReportsBuffer.shift();
+			historicalReportsBuffer.push({ label: levelLabel, status: outcomeStatus });
+
+			// Redraw log indicators on screen elements
+			for (let i = 0; i < 3; i++) {
+                const targetSlot = document.getElementById(`report-slot-${i}`);
+                const dataProfile = historicalReportsBuffer[i];
+
+                if (dataProfile === "-") {
+                    targetSlot.innerText = "-";
+                    targetSlot.className = "report-box";
+                } else {
+                    targetSlot.innerText = dataProfile.label;
+                    if (dataProfile.status === 'success') {
+                        targetSlot.className = "report-box status-success";
+                    } else {
+                        targetSlot.className = "report-box status-failed";
+                    }
+                }
+            }
+        }
+		</script>
+	</body>
+</html>
