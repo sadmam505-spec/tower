@@ -77,7 +77,7 @@
 							}
 
 							/* ==========================================================================
-							2. HEADER HEADER SECTION (Nav Bar)
+							2. HEADER SECTION (Nav Bar)
 							========================================================================== */
 							.top-nav-bar {
 							background: rgba(255, 255, 255, 0.03);
@@ -214,7 +214,7 @@
 							}
 
 							/* ==========================================================================
-							4. PREMIUM DIALOG POPUP LAYER (Rules Engine)
+							4. PREMIUM DIALOG POPUP LAYER (Rules & Dynamic Engine Alerts)
 							========================================================================== */
 							.rules-popup-overlay {
 							position: absolute;
@@ -250,6 +250,20 @@
 							transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.15);
 							}
 
+							/* Premium Red/Black Styled Warning Popup Layout */
+							.rules-card.danger-variant {
+							background: #160f12;
+							border: 1px solid rgba(255, 76, 76, 0.3);
+							box-shadow: 0 20px 50px rgba(255, 76, 76, 0.15);
+							}
+
+							/* Premium Gold/Green Styled Success Popup Layout */
+							.rules-card.bonus-variant {
+							background: #0d1a14;
+							border: 1px solid rgba(0, 255, 135, 0.3);
+							box-shadow: 0 20px 50px rgba(0, 255, 135, 0.15);
+							}
+
 							.rules-popup-overlay.active .rules-card {
 							transform: scale(1);
 							}
@@ -276,6 +290,46 @@
 							display: flex;
 							align-items: center;
 							gap: 8px;
+							}
+
+							.rules-card.danger-variant h3 {
+							color: #ff4c4c;
+							}
+
+							.rules-card.bonus-variant h3 {
+							color: #00ff87;
+							}
+
+							.popup-message-body {
+							font-size: 13px;
+							line-height: 1.6;
+							color: rgba(255, 255, 255, 0.8);
+							margin-bottom: 20px;
+							}
+
+							.popup-action-row {
+							width: 100%;
+							display: flex;
+							flex-direction: column;
+							gap: 10px;
+							}
+
+							.popup-video-trigger {
+							width: 100%;
+							padding: 12px;
+							background: linear-gradient(135deg, #f3ba2f 0%, #e1a307 100%);
+							color: #000000;
+							border: none;
+							border-radius: 12px;
+							font-size: 13px;
+							font-weight: 700;
+							text-transform: uppercase;
+							cursor: pointer;
+							display: flex;
+							align-items: center;
+							justify-content: center;
+							gap: 8px;
+							box-shadow: 0 4px 15px rgba(243, 186, 47, 0.2);
 							}
 
 							.rules-list-scroller {
@@ -324,17 +378,17 @@
 
 							.tower-floor-btn {
 							height: 38px;
-							background: rgba(255, 255, 255, 0.03);
-							border: 1px solid rgba(255, 255, 255, 0.06);
+							background: rgba(255, 255, 255, 0.02);
+							border: 1px solid rgba(255, 255, 255, 0.04);
 							border-radius: 10px;
 							display: flex;
 							justify-content: center;
 							align-items: center;
-							color: rgba(255, 255, 255, 0.25); /* Faint text standard */
+							color: rgba(255, 255, 255, 0.15); /* Faint text locked state default */
 							font-size: 12px;
 							font-weight: 600;
 							letter-spacing: 0.5px;
-							pointer-events: none; /* Disabled by default */
+							pointer-events: none; /* Disabled by default on page load */
 							transition: all 0.25s ease;
 							text-transform: uppercase;
 							}
@@ -458,21 +512,62 @@
 		<div class="app-container">
 
 			<div class="rules-popup-overlay" id="rules-popup-layer">
-				<div class="rules-card">
-					<div class="rules-close-icon" onclick="toggleRulesModal(false)">
+				<div class="rules-card" id="modal-rules-content" style="display: none;">
+					<div class="rules-close-icon" onclick="togglePopupModal(false)">
 						<i class="fa-solid fa-xmark"></i>
 					</div>
 					<h3>
 						<i class="fa-solid fa-book-open"></i> Game Rules
 					</h3>
 					<div class="rules-list-scroller">
-						<div class="rule-item">1. পরপর ৩ বার যদি LV6 পর্যন্ত যেতে পারেন তাহলে ২টি Life বোনাস পাবেন।</div>
-						<div class="rule-item">2. পরপর ৩ বার যদি LV7 যেতে পারেন তাহলে ৫ Life বোনাস।</div>
-						<div class="rule-item">3. পরপর ৩বার LV8 গেলে ২০ Life বোনাস।</div>
-						<div class="rule-item">4. পরপর ৩ বার Failed হলে ৩টা Life মাইনাস হয়ে যাবে।</div>
-						<div class="rule-item">5. একটা Session কমপ্লিট হলে পরের Session শুরু হবে ২.৫ ঘন্টা পর।</div>
-						<div class="rule-item">6. এই ২.৫ আওয়ারকে স্কিপ করে ইনস্ট্যান্ট ১০ Life পেতে আপনি একটি ভিডিও দেখতে পারেন।</div>
-						<div class="rule-item">7. Life শেষ না হওয়া পর্যন্ত ভিডিও অ্যাভেইলেবল হবে না।</div>
+						<div class="rule-item">1. Achieving a successful tier streak of 3 consecutive Level 6 completions will instantly award you +2 Bonus Lives.</div>
+						<div class="rule-item">2. Achieving a successful tier streak of 3 consecutive Level 7 completions will instantly award you +10 Bonus Lives.</div>
+						<div class="rule-item">3. Achieving a successful tier streak of 3 consecutive Level 8 completions will instantly award you +20 Bonus Lives.</div>
+						<div class="rule-item">4. Suffering a continuous sequence of 3 consecutive Failed sessions will automatically deduct 3 Lives from your ledger balance.</div>
+						<div class="rule-item">5. Once a session sequence is finalized, the subsequent gaming tier unlock frame cycle starts after a 2.5-hour cooldown.</div>
+						<div class="rule-item">6. You can seamlessly bypass the 2.5-hour cooldown interval and claim 10 Instant Lives immediately by watching a rewarded promotional video.</div>
+						<div class="rule-item">7. The rewarded ad injection mechanism remains locked and unavailable until your live operational tracking meter drops down to 0.</div>
+					</div>
+				</div>
+
+				<div class="rules-card" id="modal-nolives-content" style="display: none;">
+					<div class="rules-close-icon" onclick="togglePopupModal(false)">
+						<i class="fa-solid fa-xmark"></i>
+					</div>
+					<h3>
+						<i class="fa-solid fa-heart-crack"></i> No Lives Remaining
+					</h3>
+					<div class="popup-message-body">
+						Your operational lives balance has been completely depleted. Please wait 2.5 hours for automatic replenishment, or watch a rewarded video advertisement right now to instantly secure 10 fresh lives!
+					</div>
+					<div class="popup-action-row">
+						<button class="popup-video-trigger" onclick="watchRewardedAdSequence()">
+							<i class="fa-solid fa-clapperboard"></i> Watch Video Ad
+						</button>
+					</div>
+				</div>
+
+				<div class="rules-card danger-variant" id="modal-danger-content" style="display: none;">
+					<div class="rules-close-icon" onclick="togglePopupModal(false)">
+						<i class="fa-solid fa-xmark"></i>
+					</div>
+					<h3>
+						<i class="fa-solid fa-triangle-exclamation"></i> Lives Deducted!
+					</h3>
+					<div class="popup-message-body" id="danger-popup-text">
+						You have suffered a continuous sequence of 3 consecutive losses! As a result, 3 lives have been deducted from your current balance ledger.
+					</div>
+				</div>
+
+				<div class="rules-card bonus-variant" id="modal-bonus-content" style="display: none;">
+					<div class="rules-close-icon" onclick="togglePopupModal(false)">
+						<i class="fa-solid fa-xmark"></i>
+					</div>
+					<h3>
+						<i class="fa-solid fa-gift"></i> Streak Bonus Granted!
+					</h3>
+					<div class="popup-message-body" id="bonus-popup-text">
+						Congratulations! Achieving 3 consecutive level completions has successfully granted a premium reward package to your account balance.
 					</div>
 				</div>
 			</div>
@@ -503,7 +598,7 @@
 							<div class="report-box" id="report-slot-2">-</div>
 						</div>
 					</div>
-					<button class="rules-trigger-btn" onclick="toggleRulesModal(true)">
+					<button class="rules-trigger-btn" onclick="triggerRulesModalView()">
 						Rules <i class="fa-solid fa-circle-info"></i>
 					</button>
 				</div>
@@ -532,52 +627,90 @@
 		</div>
 
 		<script>
-			// Game Mechanics Structural Configuration Profile
+			/* ==========================================================================
+			[⚓ FIREBASE DATA RECEPTION ANCHOR MARKER]
+			==========================================================================
+			The baseline operational states declared here are loaded cleanly on application
+			initiation. During deployment, link this structural segment directly to pull
+			historical account balance records and dynamic states from Firebase real-time nodes.
+			========================================================================== */
+
+			// Game Mechanics Probability Calibration Profile Matrix
 			const floorConfigurationMatrix = {
 			1: { points: 2,   minRoll: 1,  maxRoll: 90 },  // 90% Win Chance
 			2: { points: 5,   minRoll: 1,  maxRoll: 80 },  // 80% Win Chance
 			3: { points: 10,  minRoll: 1,  maxRoll: 70 },  // 70% Win Chance
 			4: { points: 15,  minRoll: 1,  maxRoll: 55 },  // 55% Win Chance
-			5: { points: 40,  minRoll: 1,  maxRoll: 40 },  // 40% Win Chance (Revised mapping logic range 1-40)
-			6: { points: 30,  minRoll: 21, maxRoll: 40 },  // 20% Win Chance (Strict range 21-40)
-			7: { points: 50,  minRoll: 61, maxRoll: 70 },  // 10% Win Chance (Strict range 61-70)
-			8: { points: 100, minRoll: 16, maxRoll: 20 }   // 5% Win Chance  (Strict range 16-20)
+			5: { points: 40,  minRoll: 1,  maxRoll: 40 },  // 40% Win Chance
+			6: { points: 30,  minRoll: 21, maxRoll: 40 },  // 20% Win Chance
+			7: { points: 50,  minRoll: 61, maxRoll: 70 },  // 10% Win Chance
+			8: { points: 100, minRoll: 16, maxRoll: 20 }   // 5% Win Chance
 			};
 
-			// Core Running Memory States
+			// Core Runtime Memory Parameter Allocations (Starts at Balance: 0, Lives: 10)
 			let globalPointsBalance = 0;
 			let runningLivesCount = 10;
 			let activeCurrentFloorLevel = 0;
 			let pendingClaimablePoints = 0;
 			let isGameSessionRunning = false;
 
-			// Report Rolling Buffer Memory array
+			// Recent Logging Structural Pipeline Array Tracking
 			let historicalReportsBuffer = ["-", "-", "-"];
 
 			/**
-			* Open/Close Premium HTML Dialog Layer
+			* Controls global overlay visibility matrix toggles
 			*/
-			function toggleRulesModal(shouldShow) {
-			const rulesPopup = document.getElementById('rules-popup-layer');
-			if (shouldShow) {
-			rulesPopup.classList.add('active');
+			function togglePopupModal(shouldShow, targetContentId = '') {
+			const overlay = document.getElementById('rules-popup-layer');
+
+			// Blanket hide all content panes safely first
+			document.getElementById('modal-rules-content').style.display = 'none';
+			document.getElementById('modal-nolives-content').style.display = 'none';
+			document.getElementById('modal-danger-content').style.display = 'none';
+			document.getElementById('modal-bonus-content').style.display = 'none';
+
+			if (shouldShow && targetContentId) {
+			overlay.classList.add('active');
+			document.getElementById(targetContentId).style.display = 'block';
 			} else {
-			rulesPopup.classList.remove('active');
+			overlay.classList.remove('active');
 			}
 			}
 
 			/**
-			* Core Controller Button Router (Start vs Claim Actions Manager)
+			* Explicit Trigger Router Shortcuts for Modal Sub-variants
+			*/
+			function triggerRulesModalView() {
+			togglePopupModal(true, 'modal-rules-content');
+			}
+
+			function watchRewardedAdSequence() {
+			togglePopupModal(false);
+
+			// Mock Injection Code Segment (To be swapped with Adsgram SDK later)
+			alert("Launching Adsgram/Monetag API Video Integration Stream...");
+			runningLivesCount = 10;
+			document.getElementById('lives-running-count').innerText = runningLivesCount;
+			}
+
+			/**
+			* Core Controller Button Router (Start vs Claim Actions Manager Engine)
 			*/
 			function handleMasterActionClick() {
+			// Safety Check validation matrix gatekeeper
 			if (runningLivesCount <= 0) {
-			alert("No lives remaining! Please watch a video to replenish.");
+			togglePopupModal(true, 'modal-nolives-content');
 			return;
 			}
 
 			if (!isGameSessionRunning) {
-			// START ROUTINE ACTIONS
+			// ENGINE REVOLUTION TRIGGER START UP ROUTINE
 			isGameSessionRunning = true;
+
+			// Immediate Life Token Deduction on Session Execution Entry
+			runningLivesCount--;
+			document.getElementById('lives-running-count').innerText = runningLivesCount;
+
 			activeCurrentFloorLevel = 1;
 			pendingClaimablePoints = 0;
 
@@ -586,13 +719,12 @@
 
 			updateMasterButtonUI('active_game');
 			} else {
-			// SECURE WIN CLAIM ROUTINE ACTIONS
+			// SECURE WIN CLAIM ROUTINE LAUNCHPAD ACTIONS
 			globalPointsBalance += pendingClaimablePoints;
 			document.getElementById('global-user-balance').innerText = globalPointsBalance.toLocaleString();
 
-			// Update Logger Frame with secured target status
+			// Finalize trace mapping status values safely
 			pushNewReportLog(`lv${activeCurrentFloorLevel}`, 'success');
-
 			exitGameSessionEngine();
 			}
 			}
@@ -616,80 +748,71 @@
 			function evaluateFloorAttempt(floorId) {
 			if (!isGameSessionRunning || floorId !== activeCurrentFloorLevel) return;
 
-			// Generate precise random integer bounded 1 to 100 inclusive
 			const enginePickedRandomNumber = Math.floor(Math.random() * 100) + 1;
 			const floorRules = floorConfigurationMatrix[floorId];
-
 			const floorElement = document.getElementById(`floor-lv${floorId}`);
+
 			floorElement.classList.remove('ready-state');
 
-			// Probability Match Check Execution Loop
 			if (enginePickedRandomNumber >= floorRules.minRoll && enginePickedRandomNumber <= floorRules.maxRoll) {
-			// SUCCESS SUB-ROUTINE HANDLER
+			// SUCCESS SUB-ROUTINE EVALUATION MATCH
 			floorElement.className = "tower-floor-btn success-state";
 			floorElement.innerText = "SUCCESS";
 
-			pendingClaimablePoints = floorRules.points; // Overwrite current tier payload safely
+			pendingClaimablePoints = floorRules.points;
 			updateMasterButtonUI('claim_state', pendingClaimablePoints);
 
 			if (floorId < 8) {
-                    // Transition upwards to next armed row floor target safely
-                    activeCurrentFloorLevel = floorId + 1;
-                    armFloorLevelState(activeCurrentFloorLevel);
-                } else {
-                    // Maximum Floor Level 8 Conquered automatically trigger system claims
-                    alert("Ultimate Conquered! Floor Level 8 Cleared cleanly.");
-                    globalPointsBalance += pendingClaimablePoints;
-                    document.getElementById('global-user-balance').innerText = globalPointsBalance.toLocaleString();
-                    pushNewReportLog('lv8', 'success');
-                    exitGameSessionEngine();
-                }
-            } else {
-                // FAILURE / CRASH SUB-ROUTINE HANDLER
-                floorElement.className = "tower-floor-btn failed-state";
-                floorElement.innerText = "FAILED";
+						activeCurrentFloorLevel = floorId + 1;
+						armFloorLevelState(activeCurrentFloorLevel);
+					} else {
+						// Automatic Terminal Floor Clear Routine Actions Trigger
+						alert("Ultimate Conquered! Floor Level 8 Cleared cleanly.");
+						globalPointsBalance += pendingClaimablePoints;
+						document.getElementById('global-user-balance').innerText = globalPointsBalance.toLocaleString();
+						pushNewReportLog('lv8', 'success');
+						exitGameSessionEngine();
+					}
+				} else {
+					// FAILURE SUB-ROUTINE EVALUATION MATCH (No life deduction here anymore)
+					floorElement.className = "tower-floor-btn failed-state";
+					floorElement.innerText = "FAILED";
 
-                runningLivesCount--;
-                document.getElementById('lives-running-count').innerText = runningLivesCount;
+					pushNewReportLog(`lv${floorId}`, 'failed');
 
-                // Push failed trace profile directly into report slot buffer
-                pushNewReportLog(`lv${floorId}`, 'failed');
+					setTimeout(() => {
+						exitGameSessionEngine();
+					}, 1200);
+				}
+			}
 
-                // Freeze thread, perform rollback to absolute neutral cycle matrix configuration
-                setTimeout(() => {
-                    exitGameSessionEngine();
-                }, 1200);
-            }
-        }
+			/**
+			 * Exit and Flash Memory parameters down clean back to baseline states
+			 */
+			function exitGameSessionEngine() {
+				isGameSessionRunning = false;
+				activeCurrentFloorLevel = 0;
+				pendingClaimablePoints = 0;
+				
+				resetPyramidTowerVisuals();
+				updateMasterButtonUI('start_state');
+			}
 
-        /**
-         * Exit and Flash Memory parameters down clean back to baseline states
-         */
-        function exitGameSessionEngine() {
-            isGameSessionRunning = false;
-            activeCurrentFloorLevel = 0;
-            pendingClaimablePoints = 0;
-            
-            resetPyramidTowerVisuals();
-            updateMasterButtonUI('start_state');
-        }
-
-        /**
-         * Restores clean layout defaults across the entire pyramid block tower
-         */
-        function resetPyramidTowerVisuals() {
-            for (let i = 1; i <= 8; i++) {
+			/**
+			 * Restores clean layout defaults across the entire locked pyramid block tower
+			 */
+			function resetPyramidTowerVisuals() {
+				for (let i = 1; i <= 8; i++) {
 			const floor = document.getElementById(`floor-lv${i}`);
-			floor.className = "tower-floor-btn"; // Strip active state styles cleanly
+			floor.className = "tower-floor-btn"; // Strips armed states out cleanly
 
-			// Restore default text structures smoothly
 			const configurationPointsValue = floorConfigurationMatrix[i].points;
 			floor.innerText = `lv${i} ${configurationPointsValue}pts`;
 			}
 			}
 
 			/**
-			* UI Controller Label Modifier Engine
+			* UI Control State Manager Modifiers
 			*/
 			function updateMasterButtonUI(stateMode, rewardValue = 0) {
 			const masterBtn = document.getElementById('master-action-btn');
@@ -701,7 +824,7 @@
 			} else if (stateMode === 'active_game') {
 			masterBtn.className = "engine-action-trigger state-start";
 			masterBtn.innerText = "Playing...";
-			masterBtn.disabled = true; // Lock down click till a level is conqurered
+			masterBtn.disabled = true;
 			} else if (stateMode === 'claim_state') {
 			masterBtn.className = "engine-action-trigger state-claim";
 			masterBtn.innerText = `Claim ${rewardValue} pts`;
@@ -710,31 +833,106 @@
 			}
 
 			/**
-			* Pushes fresh game logs into the Top Buffer Shelf Layout View dynamically
+			* Recent Log Buffer Engine & Complex Analytics Evaluation Engine for Streaks
 			*/
 			function pushNewReportLog(levelLabel, outcomeStatus) {
-			// Drop oldest index shift arrays upwards seamlessly
 			historicalReportsBuffer.shift();
 			historicalReportsBuffer.push({ label: levelLabel, status: outcomeStatus });
 
-			// Redraw log indicators on screen elements
+			// Redraw logging panel nodes inside layout engine
 			for (let i = 0; i < 3; i++) {
-                const targetSlot = document.getElementById(`report-slot-${i}`);
-                const dataProfile = historicalReportsBuffer[i];
+					const targetSlot = document.getElementById(`report-slot-${i}`);
+					const dataProfile = historicalReportsBuffer[i];
 
-                if (dataProfile === "-") {
-                    targetSlot.innerText = "-";
-                    targetSlot.className = "report-box";
-                } else {
-                    targetSlot.innerText = dataProfile.label;
-                    if (dataProfile.status === 'success') {
-                        targetSlot.className = "report-box status-success";
-                    } else {
-                        targetSlot.className = "report-box status-failed";
-                    }
-                }
-            }
-        }
+					if (dataProfile === "-") {
+						targetSlot.innerText = "-";
+						targetSlot.className = "report-box";
+					} else {
+						targetSlot.innerText = dataProfile.label;
+						if (dataProfile.status === 'success') {
+							targetSlot.className = "report-box status-success";
+						} else {
+							targetSlot.className = "report-box status-failed";
+						}
+					}
+				}
+
+				// Execute validation engine check parameters against buffered elements for streaks
+				evaluateStreakRulesConsequences();
+			}
+
+			/**
+			 * Evaluates consecutive win streaks or lose sequences inside active trace arrays
+			 */
+			function evaluateStreakRulesConsequences() {
+				// Ensure buffer tracking data arrays are completely populated
+				if (historicalReportsBuffer[0] === "-" || historicalReportsBuffer[1] === "-" || historicalReportsBuffer[2] === "-") {
+					return;
+				}
+
+				const slot0 = historicalReportsBuffer[0];
+				const slot1 = historicalReportsBuffer[1];
+				const slot2 = historicalReportsBuffer[2];
+
+				// CONDITION 1: Check for 3 Consecutive Failed Sequences
+				if (slot0.status === 'failed' && slot1.status === 'failed' && slot2.status === 'failed') {
+			if (runningLivesCount >= 3) {
+			runningLivesCount -= 3;
+			} else {
+			runningLivesCount = 0;
+			}
+			document.getElementById('lives-running-count').innerText = runningLivesCount;
+
+			document.getElementById('danger-popup-text').innerText = "You have suffered a continuous loss streak of 3 consecutive sessions! As a safeguard enforcement penalty, 3 lives have been deducted from your balance tracker.";
+			togglePopupModal(true, 'modal-danger-content');
+
+			// Reset buffer memory parameters to neutral state to prevent infinite recursion loop triggers
+			historicalReportsBuffer = ["-", "-", "-"];
+			return;
+			}
+
+			// CONDITION 2: Check for 3 Consecutive Successful Level 6 Completions
+			if (slot0.label === 'lv6' && slot1.label === 'lv6' && slot2.label === 'lv6' &&
+			slot0.status === 'success' && slot1.status === 'success' && slot2.status === 'success') {
+
+			runningLivesCount += 2;
+			document.getElementById('lives-running-count').innerText = runningLivesCount;
+
+			document.getElementById('bonus-popup-text').innerText = "Incredible Tier Feat! Achieving a consecutive streak of 3 successful Level 6 completions has instantly earned you +2 free bonus lives.";
+			togglePopupModal(true, 'modal-bonus-content');
+
+			historicalReportsBuffer = ["-", "-", "-"];
+			return;
+			}
+
+			// CONDITION 3: Check for 3 Consecutive Successful Level 7 Completions
+			if (slot0.label === 'lv7' && slot1.label === 'lv7' && slot2.label === 'lv7' &&
+			slot0.status === 'success' && slot1.status === 'success' && slot2.status === 'success') {
+
+			runningLivesCount += 10;
+			document.getElementById('lives-running-count').innerText = runningLivesCount;
+
+			document.getElementById('bonus-popup-text').innerText = "Phenomenal Stratum Conquest! Achieving a consecutive streak of 3 successful Level 7 completions has successfully granted your account +10 free bonus lives.";
+			togglePopupModal(true, 'modal-bonus-content');
+
+			historicalReportsBuffer = ["-", "-", "-"];
+			return;
+			}
+
+			// CONDITION 4: Check for 3 Consecutive Successful Level 8 Completions
+			if (slot0.label === 'lv8' && slot1.label === 'lv8' && slot2.label === 'lv8' &&
+			slot0.status === 'success' && slot1.status === 'success' && slot2.status === 'success') {
+
+			runningLivesCount += 20;
+			document.getElementById('lives-running-count').innerText = runningLivesCount;
+
+			document.getElementById('bonus-popup-text').innerText = "Absolute Master Strategy Cleared! Achieving a consecutive streak of 3 ultimate Level 8 completions has unlocked the legendary +20 free bonus lives package.";
+			togglePopupModal(true, 'modal-bonus-content');
+
+			historicalReportsBuffer = ["-", "-", "-"];
+			return;
+			}
+			}
 		</script>
 	</body>
 </html>
